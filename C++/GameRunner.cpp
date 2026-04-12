@@ -27,5 +27,4 @@ int main()
 			notAWinner = aGame.wasCorrectlyAnswered();
 		}
 	} while (notAWinner);
-
 }
