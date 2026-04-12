@@ -1,31 +1,38 @@
-FILES = GameRunner.cpp Game.cpp Game.h
-TEST_FILES = Game.cpp Game.h
-CC = g++
-OPTS = -std=c++17 -Wall -Wextra -Werror
-OUTOPTS = -o 
-OUT = out/trivia
-TEST_OUT = out/trivia_tests
+SRC_DIR := src
+TEST_DIR := test
+BUILD_DIR := out
 
-all: prod 
+CXX := g++
+CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -I$(SRC_DIR)
+
+APP_SOURCES := $(SRC_DIR)/GameRunner.cpp $(SRC_DIR)/Game.cpp
+TEST_SOURCES := $(SRC_DIR)/Game.cpp
+
+APP_TARGET := $(BUILD_DIR)/trivia
+TEST_TARGET := $(BUILD_DIR)/trivia_tests
+
+.PHONY: all prod build run tests test runTest clean
+
+all: prod
 
 prod: build run
 
 tests: test runTest
 
-.outputFolder:
-	mkdir -p out
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-build: .outputFolder
-	$(CC) $(FILES) $(OPTS) $(OUTOPTS) $(OUT)
+build: $(BUILD_DIR)
+	$(CXX) $(APP_SOURCES) $(CXXFLAGS) -o $(APP_TARGET)
 
-run: 
-	./$(OUT)
+run: build
+	./$(APP_TARGET)
 
-test: .outputFolder
-	$(CC) $(TEST_FILES) $(OPTS) $(OUTOPTS) $(TEST_OUT)
+test: $(BUILD_DIR)
+	$(CXX) $(TEST_SOURCES) $(CXXFLAGS) -o $(TEST_TARGET)
 
-runTest: 
-	./$(TEST_OUT)
+runTest: test
+	./$(TEST_TARGET)
 
-clean: 
-	rm -rf out/
+clean:
+	rm -rf $(BUILD_DIR)
