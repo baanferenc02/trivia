@@ -175,7 +175,7 @@ bool Game::wasCorrectlyAnswered()
 	else
 	{
 
-		cout << "Answer was corrent!!!!" << endl;
+		cout << "Answer was correct!!!!" << endl;
 		purses[currentPlayer]++;
 		cout << players[currentPlayer] << " now has " << purses[currentPlayer]
 			 << " Gold Coins." << endl;
