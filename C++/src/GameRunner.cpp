@@ -1,7 +1,7 @@
 ﻿#include <stdlib.h>
 #include "Game.h"
 
-static bool notAWinner;
+static Game::TurnResult result;
 
 int main()
 {
@@ -15,18 +15,9 @@ int main()
 
 	do
 	{
-		bool canAnswer = aGame.roll(rand() % 5 + 1);
+		result = aGame.takeTurn(rand() % 5 + 1, rand() % 9 != 7);
+		if (result.gameWon)
+			std::cout << "Game over!" << std::endl;
 
-		if (canAnswer)
-		{
-			if (rand() % 9 == 7)
-			{
-				notAWinner = aGame.wrongAnswer();
-			}
-			else
-			{
-				notAWinner = aGame.wasCorrectlyAnswered();
-			}
-		}
-	} while (notAWinner);
+	} while (!result.gameWon);
 }
