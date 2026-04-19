@@ -10,6 +10,8 @@ using namespace std;
 class Game
 {
 private:
+	enum class Category { Pop, Science, Sports, Rock };
+
 	vector<Player> players;
 
 	list<string> popQuestions;
@@ -32,7 +34,8 @@ private:
 	void moveCurrentPlayer(int roll);
 	bool awardCoinAndAdvance();
 	void askQuestion();
-	string currentCategory();
+	Category currentCategory();
+	string categoryName(Category category);
 public:
 	bool wasCorrectlyAnswered();
 	bool wrongAnswer();

@@ -68,7 +68,7 @@ void Game::moveCurrentPlayer(int roll)
 
 	cout << players[currentPlayer].name << "'s new location is "
 		 << players[currentPlayer].place << endl;
-	cout << "The category is " << currentCategory() << endl;
+	cout << "The category is " << categoryName(currentCategory()) << endl;
 	askQuestion();
 }
 
@@ -114,49 +114,55 @@ void Game::roll(int roll)
 
 void Game::askQuestion()
 {
-	if (currentCategory() == "Pop")
+	switch (currentCategory())
 	{
+	case Category::Pop:
 		cout << popQuestions.front() << endl;
 		popQuestions.pop_front();
-	}
-	if (currentCategory() == "Science")
-	{
+		break;
+	case Category::Science:
 		cout << scienceQuestions.front() << endl;
 		scienceQuestions.pop_front();
-	}
-	if (currentCategory() == "Sports")
-	{
+		break;
+	case Category::Sports:
 		cout << sportsQuestions.front() << endl;
 		sportsQuestions.pop_front();
-	}
-	if (currentCategory() == "Rock")
-	{
+		break;
+	case Category::Rock:
 		cout << rockQuestions.front() << endl;
 		rockQuestions.pop_front();
+		break;
 	}
 }
 
-string Game::currentCategory()
+Game::Category Game::currentCategory()
 {
-	if (players[currentPlayer].place == 0)
+	switch (players[currentPlayer].place % 4)
+	{
+	case 0:
+		return Category::Pop;
+	case 1:
+		return Category::Science;
+	case 2:
+		return Category::Sports;
+	default:
+		return Category::Rock;
+	}
+}
+
+string Game::categoryName(Category category)
+{
+	switch (category)
+	{
+	case Category::Pop:
 		return "Pop";
-	if (players[currentPlayer].place == 4)
-		return "Pop";
-	if (players[currentPlayer].place == 8)
-		return "Pop";
-	if (players[currentPlayer].place == 1)
+	case Category::Science:
 		return "Science";
-	if (players[currentPlayer].place == 5)
-		return "Science";
-	if (players[currentPlayer].place == 9)
-		return "Science";
-	if (players[currentPlayer].place == 2)
+	case Category::Sports:
 		return "Sports";
-	if (players[currentPlayer].place == 6)
-		return "Sports";
-	if (players[currentPlayer].place == 10)
-		return "Sports";
-	return "Rock";
+	default:
+		return "Rock";
+	}
 }
 
 bool Game::wasCorrectlyAnswered()
