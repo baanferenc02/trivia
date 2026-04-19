@@ -45,68 +45,71 @@ void Game::advanceCurrentPlayer()
 		currentPlayer = 0;
 }
 
-void Game::moveCurrentPlayer(int roll)
+void Game::moveCurrentPlayer(int roll, vector<string>& messages)
 {
 	players[currentPlayer].place = players[currentPlayer].place + roll;
 	if (players[currentPlayer].place > 11)
 		players[currentPlayer].place = players[currentPlayer].place - 12;
 
-	cout << players[currentPlayer].name << "'s new location is "
-		 << players[currentPlayer].place << endl;
-	cout << "The category is " << categoryName(currentCategory()) << endl;
-	askQuestion();
+	messages.push_back(players[currentPlayer].name + "'s new location is " +
+					   to_string(players[currentPlayer].place));
+	messages.push_back("The category is " + categoryName(currentCategory()));
+	askQuestion(messages);
 }
 
 Game::TurnResult Game::takeTurn(int roll, bool answerCorrect)
 {
-	cout << players[currentPlayer].name << " is the current player" << endl;
-	cout << "They have rolled a " << roll << endl;
+	TurnResult result{false, {}};
+	result.messages.push_back(players[currentPlayer].name +
+							  " is the current player");
+	result.messages.push_back("They have rolled a " + to_string(roll));
 
 	if (players[currentPlayer].inPenaltyBox)
 	{
 		if (roll % 2 != 0)
 		{
-			cout << players[currentPlayer].name
-				 << " is getting out of the penalty box" << endl;
-			moveCurrentPlayer(roll);
+			result.messages.push_back(players[currentPlayer].name +
+									  " is getting out of the penalty box");
+			moveCurrentPlayer(roll, result.messages);
 		}
 		else
 		{
-			cout << players[currentPlayer].name
-				 << " is not getting out of the penalty box" << endl;
+			result.messages.push_back(players[currentPlayer].name +
+									  " is not getting out of the penalty box");
 			advanceCurrentPlayer();
-			return {false};
+			return result;
 		}
 	}
 	else
 	{
-		moveCurrentPlayer(roll);
+		moveCurrentPlayer(roll, result.messages);
 	}
 
 	if (!answerCorrect)
 	{
-		cout << "Question was incorrectly answered" << endl;
-		cout << players[currentPlayer].name << " was sent to the penalty box"
-			 << endl;
+		result.messages.push_back("Question was incorrectly answered");
+		result.messages.push_back(players[currentPlayer].name +
+								  " was sent to the penalty box");
 		players[currentPlayer].inPenaltyBox = true;
 		advanceCurrentPlayer();
-		return {false};
+		return result;
 	}
 
-	cout << "Answer was correct!!!!" << endl;
+	result.messages.push_back("Answer was correct!!!!");
 	players[currentPlayer].purse++;
-	cout << players[currentPlayer].name << " now has "
-		 << players[currentPlayer].purse << " Gold Coins." << endl;
+	result.messages.push_back(players[currentPlayer].name + " now has " +
+							  to_string(players[currentPlayer].purse) +
+							  " Gold Coins.");
 
-	bool winner = didPlayerWin();
+	result.gameWon = didPlayerWin();
 	advanceCurrentPlayer();
-	return {winner};
+	return result;
 }
 
-void Game::askQuestion()
+void Game::askQuestion(vector<string>& messages)
 {
 	list<string>& categoryQuestions = questionsFor(currentCategory());
-	cout << categoryQuestions.front() << endl;
+	messages.push_back(categoryQuestions.front());
 	categoryQuestions.pop_front();
 }
 

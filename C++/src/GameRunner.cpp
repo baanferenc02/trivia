@@ -1,4 +1,6 @@
-﻿#include <stdlib.h>
+﻿#include <ctime>
+#include <iostream>
+#include <stdlib.h>
 #include "Game.h"
 
 static Game::TurnResult result;
@@ -16,6 +18,9 @@ int main()
 	do
 	{
 		result = aGame.takeTurn(rand() % 5 + 1, rand() % 9 != 7);
+		for (const auto& message : result.messages)
+			std::cout << message << std::endl;
+
 		if (result.gameWon)
 			std::cout << "Game over!" << std::endl;
 
