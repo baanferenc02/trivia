@@ -16,12 +16,15 @@ TEST_CASE("game becomes playable after two players are added")
 	CHECK(game.isPlayable());
 }
 
-TEST_CASE("rock question text is generated deterministically")
+TEST_CASE("game tracks added players")
 {
 	Game game;
 
-	CHECK(game.createRockQuestion(0) == "Rock Question 0");
-	CHECK(game.createRockQuestion(17) == "Rock Question 17");
+	CHECK(game.howManyPlayers() == 0);
+	CHECK(game.add({"Chet"}));
+	CHECK(game.howManyPlayers() == 1);
+	CHECK(game.add({"Pat"}));
+	CHECK(game.howManyPlayers() == 2);
 }
 
 TEST_CASE("wrong answers keep the game going")

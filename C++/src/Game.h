@@ -4,6 +4,7 @@
 #include <array>
 #include <iostream>
 #include <list>
+#include <string>
 #include <vector>
 #include "Player.h"
 
@@ -20,7 +21,6 @@ private:
 	bool isGettingOutOfPenaltyBox;
 public:
 	Game();
-	std::string createRockQuestion(int index);
 	bool isPlayable();
 	bool add(const Player& player);
 
