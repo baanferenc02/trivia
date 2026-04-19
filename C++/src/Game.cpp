@@ -6,7 +6,9 @@
 
 using namespace std;
 
-Game::Game() : places{}, purses{}, currentPlayer(0)
+Game::Game()
+	: places{}, purses{}, inPenaltyBox{}, currentPlayer(0),
+	  isGettingOutOfPenaltyBox(false)
 {
 	for (int i = 0; i < 50; i++)
 	{
