@@ -1,12 +1,12 @@
+#ifndef GAME_H_
+#define GAME_H_
+
 #include <array>
 #include <iostream>
 #include <list>
 #include <vector>
 #include "Player.h"
 using namespace std;
-
-#ifndef GAME_H_
-#define GAME_H_
 
 class Game
 {
