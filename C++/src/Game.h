@@ -1,3 +1,4 @@
+#include <array>
 #include <iostream>
 #include <list>
 #include <vector>
@@ -14,10 +15,7 @@ private:
 
 	vector<Player> players;
 
-	list<string> popQuestions;
-	list<string> scienceQuestions;
-	list<string> sportsQuestions;
-	list<string> rockQuestions;
+	array<list<string>, 4> questionDecks;
 
 	unsigned int currentPlayer;
 	bool isGettingOutOfPenaltyBox;
@@ -36,6 +34,7 @@ private:
 	void askQuestion();
 	Category currentCategory();
 	string categoryName(Category category);
+	list<string>& questionsFor(Category category);
 public:
 	bool wasCorrectlyAnswered();
 	bool wrongAnswer();
