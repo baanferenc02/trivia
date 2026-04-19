@@ -57,18 +57,6 @@ void Game::moveCurrentPlayer(int roll)
 	askQuestion();
 }
 
-bool Game::awardCoinAndAdvance()
-{
-	cout << "Answer was correct!!!!" << endl;
-	players[currentPlayer].purse++;
-	cout << players[currentPlayer].name << " now has "
-		 << players[currentPlayer].purse << " Gold Coins." << endl;
-
-	bool winner = didPlayerWin();
-	advanceCurrentPlayer();
-	return !winner;
-}
-
 void Game::roll(int roll)
 {
 	cout << players[currentPlayer].name << " is the current player" << endl;
@@ -145,7 +133,14 @@ bool Game::wasCorrectlyAnswered()
 	{
 		if (isGettingOutOfPenaltyBox)
 		{
-			return awardCoinAndAdvance();
+			cout << "Answer was correct!!!!" << endl;
+			players[currentPlayer].purse++;
+			cout << players[currentPlayer].name << " now has "
+				 << players[currentPlayer].purse << " Gold Coins." << endl;
+
+			bool winner = didPlayerWin();
+			advanceCurrentPlayer();
+			return !winner;
 		}
 		else
 		{
@@ -155,7 +150,14 @@ bool Game::wasCorrectlyAnswered()
 	}
 	else
 	{
-		return awardCoinAndAdvance();
+		cout << "Answer was correct!!!!" << endl;
+		players[currentPlayer].purse++;
+		cout << players[currentPlayer].name << " now has "
+			 << players[currentPlayer].purse << " Gold Coins." << endl;
+
+		bool winner = didPlayerWin();
+		advanceCurrentPlayer();
+		return !winner;
 	}
 }
 

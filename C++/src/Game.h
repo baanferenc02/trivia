@@ -31,7 +31,6 @@ public:
 private:
 	void advanceCurrentPlayer();
 	void moveCurrentPlayer(int roll);
-	bool awardCoinAndAdvance();
 	void askQuestion();
 	Category currentCategory();
 	std::string categoryName(Category category);
