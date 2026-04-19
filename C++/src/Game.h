@@ -28,6 +28,9 @@ public:
 	int howManyPlayers();
 	void roll(int roll);
 private:
+	void advanceCurrentPlayer();
+	void moveCurrentPlayer(int roll);
+	bool awardCoinAndAdvance();
 	void askQuestion();
 	string currentCategory();
 public:

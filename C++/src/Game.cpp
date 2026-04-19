@@ -53,6 +53,37 @@ int Game::howManyPlayers()
 	return players.size();
 }
 
+void Game::advanceCurrentPlayer()
+{
+	currentPlayer++;
+	if (currentPlayer == players.size())
+		currentPlayer = 0;
+}
+
+void Game::moveCurrentPlayer(int roll)
+{
+	players[currentPlayer].place = players[currentPlayer].place + roll;
+	if (players[currentPlayer].place > 11)
+		players[currentPlayer].place = players[currentPlayer].place - 12;
+
+	cout << players[currentPlayer].name << "'s new location is "
+		 << players[currentPlayer].place << endl;
+	cout << "The category is " << currentCategory() << endl;
+	askQuestion();
+}
+
+bool Game::awardCoinAndAdvance()
+{
+	cout << "Answer was correct!!!!" << endl;
+	players[currentPlayer].purse++;
+	cout << players[currentPlayer].name << " now has "
+		 << players[currentPlayer].purse << " Gold Coins." << endl;
+
+	bool winner = didPlayerWin();
+	advanceCurrentPlayer();
+	return winner;
+}
+
 void Game::roll(int roll)
 {
 	cout << players[currentPlayer].name << " is the current player" << endl;
@@ -66,15 +97,7 @@ void Game::roll(int roll)
 
 			cout << players[currentPlayer].name
 				 << " is getting out of the penalty box" << endl;
-			players[currentPlayer].place = players[currentPlayer].place + roll;
-			if (players[currentPlayer].place > 11)
-				players[currentPlayer].place =
-					players[currentPlayer].place - 12;
-
-			cout << players[currentPlayer].name << "'s new location is "
-				 << players[currentPlayer].place << endl;
-			cout << "The category is " << currentCategory() << endl;
-			askQuestion();
+			moveCurrentPlayer(roll);
 		}
 		else
 		{
@@ -85,15 +108,7 @@ void Game::roll(int roll)
 	}
 	else
 	{
-
-		players[currentPlayer].place = players[currentPlayer].place + roll;
-		if (players[currentPlayer].place > 11)
-			players[currentPlayer].place = players[currentPlayer].place - 12;
-
-		cout << players[currentPlayer].name << "'s new location is "
-			 << players[currentPlayer].place << endl;
-		cout << "The category is " << currentCategory() << endl;
-		askQuestion();
+		moveCurrentPlayer(roll);
 	}
 }
 
@@ -150,40 +165,17 @@ bool Game::wasCorrectlyAnswered()
 	{
 		if (isGettingOutOfPenaltyBox)
 		{
-			cout << "Answer was correct!!!!" << endl;
-			players[currentPlayer].purse++;
-			cout << players[currentPlayer].name << " now has "
-				 << players[currentPlayer].purse << " Gold Coins." << endl;
-
-			bool winner = didPlayerWin();
-			currentPlayer++;
-			if (currentPlayer == players.size())
-				currentPlayer = 0;
-
-			return winner;
+			return awardCoinAndAdvance();
 		}
 		else
 		{
-			currentPlayer++;
-			if (currentPlayer == players.size())
-				currentPlayer = 0;
+			advanceCurrentPlayer();
 			return true;
 		}
 	}
 	else
 	{
-
-		cout << "Answer was correct!!!!" << endl;
-		players[currentPlayer].purse++;
-		cout << players[currentPlayer].name << " now has "
-			 << players[currentPlayer].purse << " Gold Coins." << endl;
-
-		bool winner = didPlayerWin();
-		currentPlayer++;
-		if (currentPlayer == players.size())
-			currentPlayer = 0;
-
-		return winner;
+		return awardCoinAndAdvance();
 	}
 }
 
@@ -194,9 +186,7 @@ bool Game::wrongAnswer()
 		 << endl;
 	players[currentPlayer].inPenaltyBox = true;
 
-	currentPlayer++;
-	if (currentPlayer == players.size())
-		currentPlayer = 0;
+	advanceCurrentPlayer();
 	return true;
 }
 
