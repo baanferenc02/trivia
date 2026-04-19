@@ -66,7 +66,7 @@ bool Game::awardCoinAndAdvance()
 
 	bool winner = didPlayerWin();
 	advanceCurrentPlayer();
-	return winner;
+	return !winner;
 }
 
 void Game::roll(int roll)
@@ -172,5 +172,5 @@ bool Game::wrongAnswer()
 
 bool Game::didPlayerWin()
 {
-	return !(players[currentPlayer].purse == 6);
+	return players[currentPlayer].purse == 6;
 }
