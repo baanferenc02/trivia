@@ -1,37 +1,22 @@
 ﻿#include "Game.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <iostream>
-#include <sstream>
+#include <string>
 
 using namespace std;
 
 Game::Game() : currentPlayer(0), isGettingOutOfPenaltyBox(false)
 {
-	for (int i = 0; i < 50; i++)
+	for (int questionIndex = 0; questionIndex < 50; ++questionIndex)
 	{
-		ostringstream oss(ostringstream::out);
-		oss << "Pop Question " << i;
-
-		questionsFor(Category::Pop).push_back(oss.str());
-
-		char str[255];
-		sprintf(str, "Science Question %d", i);
-		questionsFor(Category::Science).push_back(str);
-
-		char str1[255];
-		sprintf(str1, "Sports Question %d", i);
-		questionsFor(Category::Sports).push_back(str1);
-
-		questionsFor(Category::Rock).push_back(createRockQuestion(i));
+		questionsFor(Category::Pop)
+			.push_back("Pop Question " + to_string(questionIndex));
+		questionsFor(Category::Science)
+			.push_back("Science Question " + to_string(questionIndex));
+		questionsFor(Category::Sports)
+			.push_back("Sports Question " + to_string(questionIndex));
+		questionsFor(Category::Rock)
+			.push_back("Rock Question " + to_string(questionIndex));
 	}
-}
-
-string Game::createRockQuestion(int index)
-{
-	char indexStr[127];
-	sprintf(indexStr, "Rock Question %d", index);
-	return indexStr;
 }
 
 bool Game::isPlayable()
