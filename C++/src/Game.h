@@ -21,11 +21,13 @@ private:
 	bool isGettingOutOfPenaltyBox;
 public:
 	Game();
+
 	bool isPlayable();
 	bool add(const Player& player);
-
 	int howManyPlayers();
 	void roll(int roll);
+	bool wasCorrectlyAnswered();
+	bool wrongAnswer();
 private:
 	void advanceCurrentPlayer();
 	void moveCurrentPlayer(int roll);
@@ -34,10 +36,6 @@ private:
 	Category currentCategory();
 	std::string categoryName(Category category);
 	std::list<std::string>& questionsFor(Category category);
-public:
-	bool wasCorrectlyAnswered();
-	bool wrongAnswer();
-private:
 	bool didPlayerWin();
 };
 
