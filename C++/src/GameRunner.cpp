@@ -9,9 +9,9 @@ int main()
 	srand(time(NULL));
 	Game aGame;
 
-	aGame.add("Chet");
-	aGame.add("Pat");
-	aGame.add("Sue");
+	aGame.add({"Chet"});
+	aGame.add({"Pat"});
+	aGame.add({"Sue"});
 
 	do
 	{
