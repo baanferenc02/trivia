@@ -1,38 +1,31 @@
-SRC_DIR := src
-TEST_DIR := test
-BUILD_DIR := out
+FILES = GameRunner.cpp Game.cpp Game.h
+TEST_FILES = Game.cpp Game.h
+CC = g++
+OPTS = -std=c++17 -Wall -Wextra -Werror
+OUTOPTS = -o 
+OUT = out/trivia
+TEST_OUT = out/trivia_tests
 
-CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -I$(SRC_DIR) -Idoctest
-
-APP_SOURCES := $(SRC_DIR)/GameRunner.cpp $(SRC_DIR)/Game.cpp
-TEST_SOURCES := $(SRC_DIR)/Game.cpp $(TEST_DIR)/GameTests.cpp
-
-APP_TARGET := $(BUILD_DIR)/trivia
-TEST_TARGET := $(BUILD_DIR)/trivia_tests
-
-.PHONY: all prod build run tests test runTest clean
-
-all: prod
+all: prod 
 
 prod: build run
 
 tests: test runTest
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+.outputFolder:
+	mkdir -p out
 
-build: $(BUILD_DIR)
-	$(CXX) $(APP_SOURCES) $(CXXFLAGS) -o $(APP_TARGET)
+build: .outputFolder
+	$(CC) $(FILES) $(OPTS) $(OUTOPTS) $(OUT)
 
-run: build
-	./$(APP_TARGET)
+run: 
+	./$(OUT)
 
-test: $(BUILD_DIR)
-	$(CXX) $(TEST_SOURCES) $(CXXFLAGS) -o $(TEST_TARGET)
+test: .outputFolder
+	$(CC) $(TEST_FILES) $(OPTS) $(OUTOPTS) $(TEST_OUT)
 
-runTest: test
-	./$(TEST_TARGET)
+runTest: 
+	./$(TEST_OUT)
 
-clean:
-	rm -rf $(BUILD_DIR)
+clean: 
+	rm -rf out/
