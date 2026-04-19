@@ -3,6 +3,13 @@
 #include <stdlib.h>
 #include "Game.h"
 
+namespace {
+constexpr int minimumRoll = 1;
+constexpr int rollRange = 5;
+constexpr int wrongAnswerDivisor = 9;
+constexpr int wrongAnswerValue = 7;
+} // namespace
+
 static Game::TurnResult result;
 
 int main()
@@ -17,7 +24,9 @@ int main()
 
 	do
 	{
-		result = aGame.takeTurn(rand() % 5 + 1, rand() % 9 != 7);
+		result =
+			aGame.takeTurn(rand() % rollRange + minimumRoll,
+						   rand() % wrongAnswerDivisor != wrongAnswerValue);
 		for (const auto& message : result.messages)
 			std::cout << message << std::endl;
 
