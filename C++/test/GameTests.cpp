@@ -2,15 +2,16 @@
 #include "doctest.h"
 
 #include "Game.h"
+#include "Player.h"
 
 TEST_CASE("game becomes playable after two players are added")
 {
 	Game game;
 
 	CHECK_FALSE(game.isPlayable());
-	CHECK(game.add("Chet"));
+	CHECK(game.add({"Chet"}));
 	CHECK_FALSE(game.isPlayable());
-	CHECK(game.add("Pat"));
+	CHECK(game.add({"Pat"}));
 	CHECK(game.howManyPlayers() == 2);
 	CHECK(game.isPlayable());
 }
@@ -26,7 +27,7 @@ TEST_CASE("rock question text is generated deterministically")
 TEST_CASE("wrong answers keep the game going")
 {
 	Game game;
-	game.add("Chet");
+	game.add({"Chet"});
 
 	CHECK(game.wrongAnswer());
 }
@@ -34,7 +35,7 @@ TEST_CASE("wrong answers keep the game going")
 TEST_CASE("player wins on sixth correct answer")
 {
 	Game game;
-	game.add("Chet");
+	game.add({"Chet"});
 
 	for (int answerCount = 0; answerCount < 5; ++answerCount)
 	{
@@ -47,7 +48,7 @@ TEST_CASE("player wins on sixth correct answer")
 TEST_CASE("player in penalty box does not progress without an odd roll")
 {
 	Game game;
-	game.add("Chet");
+	game.add({"Chet"});
 
 	game.wrongAnswer();
 
@@ -62,7 +63,7 @@ TEST_CASE("player in penalty box does not progress without an odd roll")
 TEST_CASE("player in penalty box can still win after odd rolls")
 {
 	Game game;
-	game.add("Chet");
+	game.add({"Chet"});
 
 	game.wrongAnswer();
 
