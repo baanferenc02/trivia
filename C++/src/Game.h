@@ -18,14 +18,13 @@ private:
 	std::array<std::list<std::string>, 4> questionDecks;
 
 	unsigned int currentPlayer;
-	bool isGettingOutOfPenaltyBox;
 public:
 	Game();
 
 	bool isPlayable();
 	bool add(const Player& player);
 	int howManyPlayers();
-	void roll(int roll);
+	bool roll(int roll);
 	bool wasCorrectlyAnswered();
 	bool wrongAnswer();
 private:
