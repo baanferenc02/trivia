@@ -13,17 +13,17 @@ Game::Game() : currentPlayer(0), isGettingOutOfPenaltyBox(false)
 		ostringstream oss(ostringstream::out);
 		oss << "Pop Question " << i;
 
-		popQuestions.push_back(oss.str());
+		questionsFor(Category::Pop).push_back(oss.str());
 
 		char str[255];
 		sprintf(str, "Science Question %d", i);
-		scienceQuestions.push_back(str);
+		questionsFor(Category::Science).push_back(str);
 
 		char str1[255];
 		sprintf(str1, "Sports Question %d", i);
-		sportsQuestions.push_back(str1);
+		questionsFor(Category::Sports).push_back(str1);
 
-		rockQuestions.push_back(createRockQuestion(i));
+		questionsFor(Category::Rock).push_back(createRockQuestion(i));
 	}
 }
 
@@ -114,25 +114,9 @@ void Game::roll(int roll)
 
 void Game::askQuestion()
 {
-	switch (currentCategory())
-	{
-	case Category::Pop:
-		cout << popQuestions.front() << endl;
-		popQuestions.pop_front();
-		break;
-	case Category::Science:
-		cout << scienceQuestions.front() << endl;
-		scienceQuestions.pop_front();
-		break;
-	case Category::Sports:
-		cout << sportsQuestions.front() << endl;
-		sportsQuestions.pop_front();
-		break;
-	case Category::Rock:
-		cout << rockQuestions.front() << endl;
-		rockQuestions.pop_front();
-		break;
-	}
+	list<string>& categoryQuestions = questionsFor(currentCategory());
+	cout << categoryQuestions.front() << endl;
+	categoryQuestions.pop_front();
 }
 
 Game::Category Game::currentCategory()
@@ -163,6 +147,11 @@ string Game::categoryName(Category category)
 	default:
 		return "Rock";
 	}
+}
+
+list<string>& Game::questionsFor(Category category)
+{
+	return questionDecks[static_cast<size_t>(category)];
 }
 
 bool Game::wasCorrectlyAnswered()
