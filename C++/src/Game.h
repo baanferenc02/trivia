@@ -10,6 +10,10 @@
 
 class Game
 {
+public:
+	struct TurnResult {
+		bool gameWon;
+	};
 private:
 	enum class Category { Pop, Science, Sports, Rock };
 
@@ -24,9 +28,7 @@ public:
 	bool isPlayable();
 	bool add(const Player& player);
 	int howManyPlayers();
-	bool roll(int roll);
-	bool wasCorrectlyAnswered();
-	bool wrongAnswer();
+	TurnResult takeTurn(int roll, bool answerCorrect);
 private:
 	void advanceCurrentPlayer();
 	void moveCurrentPlayer(int roll);

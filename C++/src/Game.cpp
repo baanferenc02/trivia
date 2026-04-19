@@ -57,7 +57,7 @@ void Game::moveCurrentPlayer(int roll)
 	askQuestion();
 }
 
-bool Game::roll(int roll)
+Game::TurnResult Game::takeTurn(int roll, bool answerCorrect)
 {
 	cout << players[currentPlayer].name << " is the current player" << endl;
 	cout << "They have rolled a " << roll << endl;
@@ -69,19 +69,38 @@ bool Game::roll(int roll)
 			cout << players[currentPlayer].name
 				 << " is getting out of the penalty box" << endl;
 			moveCurrentPlayer(roll);
-			return true; // can answer
 		}
 		else
 		{
 			cout << players[currentPlayer].name
 				 << " is not getting out of the penalty box" << endl;
 			advanceCurrentPlayer();
-			return false;
+			return {false};
 		}
 	}
+	else
+	{
+		moveCurrentPlayer(roll);
+	}
 
-	moveCurrentPlayer(roll);
-	return true;
+	if (!answerCorrect)
+	{
+		cout << "Question was incorrectly answered" << endl;
+		cout << players[currentPlayer].name << " was sent to the penalty box"
+			 << endl;
+		players[currentPlayer].inPenaltyBox = true;
+		advanceCurrentPlayer();
+		return {false};
+	}
+
+	cout << "Answer was correct!!!!" << endl;
+	players[currentPlayer].purse++;
+	cout << players[currentPlayer].name << " now has "
+		 << players[currentPlayer].purse << " Gold Coins." << endl;
+
+	bool winner = didPlayerWin();
+	advanceCurrentPlayer();
+	return {winner};
 }
 
 void Game::askQuestion()
@@ -124,29 +143,6 @@ string Game::categoryName(Category category)
 list<string>& Game::questionsFor(Category category)
 {
 	return questionDecks[static_cast<size_t>(category)];
-}
-
-bool Game::wasCorrectlyAnswered()
-{
-	cout << "Answer was correct!!!!" << endl;
-	players[currentPlayer].purse++;
-	cout << players[currentPlayer].name << " now has "
-		 << players[currentPlayer].purse << " Gold Coins." << endl;
-
-	bool winner = didPlayerWin();
-	advanceCurrentPlayer();
-	return !winner;
-}
-
-bool Game::wrongAnswer()
-{
-	cout << "Question was incorrectly answered" << endl;
-	cout << players[currentPlayer].name << " was sent to the penalty box"
-		 << endl;
-	players[currentPlayer].inPenaltyBox = true;
-
-	advanceCurrentPlayer();
-	return true;
 }
 
 bool Game::didPlayerWin()

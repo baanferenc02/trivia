@@ -32,7 +32,7 @@ TEST_CASE("wrong answers keep the game going")
 	Game game;
 	game.add({"Chet"});
 
-	CHECK(game.wrongAnswer());
+	CHECK_FALSE(game.takeTurn(1, false).gameWon);
 }
 
 TEST_CASE("player wins on sixth correct answer")
@@ -42,10 +42,10 @@ TEST_CASE("player wins on sixth correct answer")
 
 	for (int answerCount = 0; answerCount < 5; ++answerCount)
 	{
-		CHECK(game.wasCorrectlyAnswered());
+		CHECK_FALSE(game.takeTurn(1, true).gameWon);
 	}
 
-	CHECK_FALSE(game.wasCorrectlyAnswered());
+	CHECK(game.takeTurn(1, true).gameWon);
 }
 
 TEST_CASE("player in penalty box does not progress without an odd roll")
@@ -53,11 +53,11 @@ TEST_CASE("player in penalty box does not progress without an odd roll")
 	Game game;
 	game.add({"Chet"});
 
-	game.wrongAnswer();
+	CHECK_FALSE(game.takeTurn(1, false).gameWon);
 
 	for (int answerCount = 0; answerCount < 10; ++answerCount)
 	{
-		CHECK_FALSE(game.roll(2));
+		CHECK_FALSE(game.takeTurn(2, true).gameWon);
 	}
 
 	CHECK(game.howManyPlayers() == 1);
@@ -68,14 +68,12 @@ TEST_CASE("player in penalty box can still win after odd rolls")
 	Game game;
 	game.add({"Chet"});
 
-	game.wrongAnswer();
+	CHECK_FALSE(game.takeTurn(1, false).gameWon);
 
 	for (int answerCount = 0; answerCount < 5; ++answerCount)
 	{
-		CHECK(game.roll(1));
-		CHECK(game.wasCorrectlyAnswered());
+		CHECK_FALSE(game.takeTurn(1, true).gameWon);
 	}
 
-	CHECK(game.roll(1));
-	CHECK_FALSE(game.wasCorrectlyAnswered());
+	CHECK(game.takeTurn(1, true).gameWon);
 }
