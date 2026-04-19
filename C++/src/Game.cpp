@@ -6,7 +6,8 @@ using namespace std;
 
 Game::Game() : currentPlayer(0)
 {
-	for (int questionIndex = 0; questionIndex < 50; ++questionIndex)
+	for (int questionIndex = 0; questionIndex < questionDeckSize;
+		 ++questionIndex)
 	{
 		questionsFor(Category::Pop)
 			.push_back("Pop Question " + to_string(questionIndex));
@@ -21,7 +22,7 @@ Game::Game() : currentPlayer(0)
 
 bool Game::isPlayable()
 {
-	return (howManyPlayers() >= 2);
+	return howManyPlayers() >= minimumPlayers;
 }
 
 bool Game::add(const Player& player)
@@ -47,9 +48,8 @@ void Game::advanceCurrentPlayer()
 
 void Game::moveCurrentPlayer(int roll, vector<string>& messages)
 {
-	players[currentPlayer].place = players[currentPlayer].place + roll;
-	if (players[currentPlayer].place > 11)
-		players[currentPlayer].place = players[currentPlayer].place - 12;
+	players[currentPlayer].place =
+		(players[currentPlayer].place + roll) % boardSize;
 
 	messages.push_back(players[currentPlayer].name + "'s new location is " +
 					   to_string(players[currentPlayer].place));
@@ -66,7 +66,7 @@ Game::TurnResult Game::takeTurn(int roll, bool answerCorrect)
 
 	if (players[currentPlayer].inPenaltyBox)
 	{
-		if (roll % 2 != 0)
+		if (roll % penaltyBoxReleaseDivisor == oddRollRemainder)
 		{
 			result.messages.push_back(players[currentPlayer].name +
 									  " is getting out of the penalty box");
@@ -115,7 +115,7 @@ void Game::askQuestion(vector<string>& messages)
 
 Game::Category Game::currentCategory()
 {
-	switch (players[currentPlayer].place % 4)
+	switch (players[currentPlayer].place % categoryCount)
 	{
 	case 0:
 		return Category::Pop;
@@ -150,5 +150,5 @@ list<string>& Game::questionsFor(Category category)
 
 bool Game::didPlayerWin()
 {
-	return players[currentPlayer].purse == 6;
+	return players[currentPlayer].purse == winningCoinCount;
 }

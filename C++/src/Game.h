@@ -15,11 +15,19 @@ public:
 		std::vector<std::string> messages;
 	};
 private:
+	static constexpr int minimumPlayers = 2;
+	static constexpr int questionDeckSize = 50;
+	static constexpr size_t categoryCount = 4;
+	static constexpr int boardSize = 12;
+	static constexpr int penaltyBoxReleaseDivisor = 2;
+	static constexpr int oddRollRemainder = 1;
+	static constexpr int winningCoinCount = 6;
+
 	enum class Category { Pop, Science, Sports, Rock };
 
 	std::vector<Player> players;
 
-	std::array<std::list<std::string>, 4> questionDecks;
+	std::array<std::list<std::string>, categoryCount> questionDecks;
 
 	unsigned int currentPlayer;
 public:
