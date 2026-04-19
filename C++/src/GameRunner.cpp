@@ -15,16 +15,18 @@ int main()
 
 	do
 	{
+		bool canAnswer = aGame.roll(rand() % 5 + 1);
 
-		aGame.roll(rand() % 5 + 1);
-
-		if (rand() % 9 == 7)
+		if (canAnswer)
 		{
-			notAWinner = aGame.wrongAnswer();
-		}
-		else
-		{
-			notAWinner = aGame.wasCorrectlyAnswered();
+			if (rand() % 9 == 7)
+			{
+				notAWinner = aGame.wrongAnswer();
+			}
+			else
+			{
+				notAWinner = aGame.wasCorrectlyAnswered();
+			}
 		}
 	} while (notAWinner);
 }

@@ -57,7 +57,7 @@ TEST_CASE("player in penalty box does not progress without an odd roll")
 
 	for (int answerCount = 0; answerCount < 10; ++answerCount)
 	{
-		CHECK(game.wasCorrectlyAnswered());
+		CHECK_FALSE(game.roll(2));
 	}
 
 	CHECK(game.howManyPlayers() == 1);
@@ -72,10 +72,10 @@ TEST_CASE("player in penalty box can still win after odd rolls")
 
 	for (int answerCount = 0; answerCount < 5; ++answerCount)
 	{
-		game.roll(1);
+		CHECK(game.roll(1));
 		CHECK(game.wasCorrectlyAnswered());
 	}
 
-	game.roll(1);
+	CHECK(game.roll(1));
 	CHECK_FALSE(game.wasCorrectlyAnswered());
 }
